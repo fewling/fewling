@@ -1,20 +1,59 @@
 <img src="./assets/header.svg" alt="fewling — mobile, backend, cloud, ai" width="100%" />
 
-Floating Lyric reads whatever's playing through Android's notification stream and
-paints time-synced lyrics in a system overlay over any app. Behind it I own the
-whole stack — a contract-first API (OpenAPI → generated clients), a rate-limited
-Genkit/DeepSeek translation service with output validation, and a JWT auth backend
-I'm migrating off Firebase onto a self-hosted Spring Boot microservices monorepo.
-I also ship fixes upstream into Flutter itself.
+## How I work
+
+- **Spec-driven** — every project starts as a written spec + plan in the repo, before any code.
+- **Contract-first** — one schema generates the clients and types, so a polyglot system can't drift.
+- **Tested & observable** — unit/integration tests across backends and web; crash reporting and analytics from day one.
+- **Build my own tooling** — custom CLI/MCP, Mason bricks, agent skills, internal Claude Code plugin, etc. to automate the boring parts and unlock new capabilities.
+
+<table>
+  <tr>
+    <td align="right"><b>Languages</b></td>
+    <td><img src="https://skillicons.dev/icons?i=dart,ts,js,java,kotlin,py,godot,cs&theme=dark" height="44" alt="Dart, TypeScript, JavaScript, Java, Kotlin, Python, GDScript (Godot), C#" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>Frontend</b></td>
+    <td><img src="https://skillicons.dev/icons?i=flutter,react,nextjs,tailwind,materialui&theme=dark" height="44" alt="Flutter, React, Next.js, Tailwind, Material UI" /> <img src="./assets/icons/shadcn.svg" height="40" alt="shadcn/ui" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>Backend</b></td>
+    <td><img src="https://skillicons.dev/icons?i=spring,nestjs,nodejs,firebase&theme=dark" height="44" alt="Spring Boot, NestJS, Node.js, Firebase" /> <img src="./assets/icons/openapi.svg" height="40" alt="OpenAPI" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>Data</b></td>
+    <td><img src="https://skillicons.dev/icons?i=mongodb,postgres,mysql&theme=dark" height="44" alt="MongoDB, PostgreSQL, MySQL" /> <img src="./assets/icons/dbeaver.svg" height="40" alt="DBeaver" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>Cloud</b></td>
+    <td><img src="https://skillicons.dev/icons?i=aws,gcp,firebase&theme=dark" height="44" alt="AWS, GCP, Firebase" /> <img src="./assets/icons/digitalocean.svg" height="40" alt="DigitalOcean" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>DevOps</b></td>
+    <td><img src="https://skillicons.dev/icons?i=githubactions,docker,git,gitlab&theme=dark" height="44" alt="GitHub Actions, Docker, Git, GitLab" /> <img src="./assets/icons/ccswitch.png" height="40" alt="cc-switch" /> <img src="./assets/icons/claude.svg" height="40" alt="Claude Code" /> <img src="./assets/icons/codex.svg" height="40" alt="Codex" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>Testing</b></td>
+    <td><img src="https://skillicons.dev/icons?i=selenium,postman&theme=dark" height="44" alt="Selenium, Postman" /> <img src="./assets/icons/playwright.svg" height="40" alt="Playwright" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>Tools</b></td>
+    <td><img src="https://skillicons.dev/icons?i=vscode,idea,pycharm,androidstudio,figma,ubuntu,windows,apple,raspberrypi,arduino&theme=dark" height="44" alt="VS Code, IntelliJ IDEA, PyCharm, Android Studio, Figma, Ubuntu, Windows, macOS, Raspberry Pi, Arduino" /> <img src="./assets/icons/cursor.svg" height="40" alt="Cursor" /> <img src="./assets/icons/xcode.svg" height="40" alt="Xcode" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>AI</b></td>
+    <td><img src="https://skillicons.dev/icons?i=vercel&theme=dark" height="44" alt="Vercel AI SDK" /> <img src="./assets/icons/adk.png" height="40" alt="Google ADK" /> <img src="./assets/icons/genkit.png" height="40" alt="genkit" /> <img src="./assets/icons/openai.svg" height="40" alt="OpenAI" /> <img src="./assets/icons/anthropic.svg" height="40" alt="Anthropic / Claude" /> <img src="./assets/icons/gemini.svg" height="40" alt="Gemini" /> <img src="./assets/icons/n8n.svg" height="40" alt="n8n" /> <img src="./assets/icons/dify.svg" height="40" alt="dify" /> <img src="./assets/icons/comfyui.png" height="40" alt="ComfyUI" /></td>
+  </tr>
+</table>
 
 ---
 
-## Floating Lyric
+## Floating Lyric (My Main Project)
 
 Time-synced lyrics in a floating overlay that stays on top of any Android app.
 **[On Google Play →](https://play.google.com/store/apps/details?id=com.floating.lyrics)**
 
-**The hard parts**
+### The Hard Parts
 
 - Reads the currently-playing track from any music app through a
   `NotificationListenerService` over Android MediaSessions — no per-app integration.
@@ -25,7 +64,7 @@ Time-synced lyrics in a floating overlay that stays on top of any Android app.
 - Translation runs server-side through a Genkit flow on DeepSeek — with an output
   validator, App Check, and per-user rate limiting.
 
-**System design**
+### System design
 
 One contract, three languages. An OpenAPI 3.1 spec is the single source of truth:
 the Dart client and the TypeScript functions are both generated from it, and the
@@ -94,54 +133,6 @@ flowchart TB
 | [flutter-floating-lyric-pkg-generated-openapi](https://github.com/fewling/flutter-floating-lyric-pkg-generated-openapi) | Generated Dart client package              |
 | [floating-lyric-spring-boot](https://github.com/fewling/floating-lyric-spring-boot)                                     | Spring Boot (Kotlin) microservices backend |
 | [floating-lyric-web](https://github.com/fewling/floating-lyric-web)                                                     | Next.js marketing site                     |
-
----
-
-## How I work
-
-- **Spec-driven** — every project starts as a written spec + plan in the repo, before any code.
-- **Contract-first** — one schema generates the clients and types, so a polyglot system can't drift.
-- **Tested & observable** — unit/integration tests across backends and web; crash reporting and analytics from day one.
-- **I build my own tooling** — custom Gradle convention plugins, Mason bricks, and agent skills.
-
-<table>
-  <tr>
-    <td align="right"><b>languages</b></td>
-    <td><img src="https://skillicons.dev/icons?i=dart,ts,js,java,kotlin,py,godot,cs&theme=dark" height="44" alt="Dart, TypeScript, JavaScript, Java, Kotlin, Python, GDScript (Godot), C#" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>frontend</b></td>
-    <td><img src="https://skillicons.dev/icons?i=flutter,react,nextjs,tailwind,materialui&theme=dark" height="44" alt="Flutter, React, Next.js, Tailwind, Material UI" /> <img src="./assets/icons/shadcn.svg" height="40" alt="shadcn/ui" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>backend</b></td>
-    <td><img src="https://skillicons.dev/icons?i=spring,nestjs,nodejs,firebase&theme=dark" height="44" alt="Spring Boot, NestJS, Node.js, Firebase" /> <img src="./assets/icons/openapi.svg" height="40" alt="OpenAPI" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>data</b></td>
-    <td><img src="https://skillicons.dev/icons?i=mongodb,postgres,mysql&theme=dark" height="44" alt="MongoDB, PostgreSQL, MySQL" /> <img src="./assets/icons/dbeaver.svg" height="40" alt="DBeaver" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>cloud</b></td>
-    <td><img src="https://skillicons.dev/icons?i=aws,gcp,firebase&theme=dark" height="44" alt="AWS, GCP, Firebase" /> <img src="./assets/icons/digitalocean.svg" height="40" alt="DigitalOcean" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>devops</b></td>
-    <td><img src="https://skillicons.dev/icons?i=githubactions,docker,git,gitlab&theme=dark" height="44" alt="GitHub Actions, Docker, Git, GitLab" /> <img src="./assets/icons/ccswitch.png" height="40" alt="cc-switch" /> <img src="./assets/icons/claude.svg" height="40" alt="Claude Code" /> <img src="./assets/icons/codex.svg" height="40" alt="Codex" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>testing</b></td>
-    <td><img src="https://skillicons.dev/icons?i=selenium,postman&theme=dark" height="44" alt="Selenium, Postman" /> <img src="./assets/icons/playwright.svg" height="40" alt="Playwright" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>tools</b></td>
-    <td><img src="https://skillicons.dev/icons?i=vscode,idea,pycharm,androidstudio,figma,ubuntu,windows,apple,raspberrypi,arduino&theme=dark" height="44" alt="VS Code, IntelliJ IDEA, PyCharm, Android Studio, Figma, Ubuntu, Windows, macOS, Raspberry Pi, Arduino" /> <img src="./assets/icons/cursor.svg" height="40" alt="Cursor" /> <img src="./assets/icons/xcode.svg" height="40" alt="Xcode" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>ai</b></td>
-    <td><img src="https://skillicons.dev/icons?i=vercel&theme=dark" height="44" alt="Vercel AI SDK" /> <img src="./assets/icons/adk.png" height="40" alt="Google ADK" /> <img src="./assets/icons/genkit.png" height="40" alt="genkit" /> <img src="./assets/icons/openai.svg" height="40" alt="OpenAI" /> <img src="./assets/icons/anthropic.svg" height="40" alt="Anthropic / Claude" /> <img src="./assets/icons/gemini.svg" height="40" alt="Gemini" /> <img src="./assets/icons/n8n.svg" height="40" alt="n8n" /> <img src="./assets/icons/dify.svg" height="40" alt="dify" /> <img src="./assets/icons/comfyui.png" height="40" alt="ComfyUI" /></td>
-  </tr>
-</table>
 
 ---
 
