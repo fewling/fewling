@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 286" width="900" height="286" role="img" aria-label="Tech stack by layer. mobile: Flutter, Dart, Kotlin (Android native), BLoC, go_router, Hive. backend: Spring Boot, Kotlin, Firebase Functions, TypeScript, OpenAPI. ai: Genkit, DeepSeek, Firebase AI Logic. cloud and data: Firestore, Firebase Auth, App Check, Remote Config, Crashlytics. web: Next.js, React, Tailwind. tooling: Gradle convention plugins, GitHub Actions, Mason, FVM.">
+  <title>Tech stack, by layer</title>
+  <rect x="1" y="1" width="898" height="284" rx="14" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+  <text x="40" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#8b949e">tech, by layer</text>
+  <line x1="180" y1="64" x2="180" y2="264" stroke="#21262d" stroke-width="1"/>
+  <line x1="40" y1="99" x2="860" y2="99" stroke="#21262d" stroke-width="0.5"/>
+  <line x1="40" y1="133" x2="860" y2="133" stroke="#21262d" stroke-width="0.5"/>
+  <line x1="40" y1="167" x2="860" y2="167" stroke="#21262d" stroke-width="0.5"/>
+  <line x1="40" y1="201" x2="860" y2="201" stroke="#21262d" stroke-width="0.5"/>
+  <line x1="40" y1="235" x2="860" y2="235" stroke="#21262d" stroke-width="0.5"/>
+
+  <text x="164" y="82" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#5DCAA5">mobile</text>
+  <text x="196" y="82" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#adbac7">Flutter · Dart · Kotlin (Android native) · BLoC · go_router · Hive</text>
+
+  <text x="164" y="116" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#5DCAA5">backend</text>
+  <text x="196" y="116" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#adbac7">Spring Boot · Kotlin · Firebase Functions · TypeScript · OpenAPI</text>
+
+  <text x="164" y="150" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#5DCAA5">ai</text>
+  <text x="196" y="150" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#adbac7">Genkit · DeepSeek · Firebase AI Logic</text>
+
+  <text x="164" y="184" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#5DCAA5">cloud &amp; data</text>
+  <text x="196" y="184" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#adbac7">Firestore · Firebase Auth · App Check · Remote Config · Crashlytics</text>
+
+  <text x="164" y="218" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#5DCAA5">web</text>
+  <text x="196" y="218" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#adbac7">Next.js · React · Tailwind</text>
+
+  <text x="164" y="252" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#5DCAA5">tooling</text>
+  <text x="196" y="252" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#adbac7">Gradle (convention plugins) · GitHub Actions · Mason · FVM</text>
+</svg>

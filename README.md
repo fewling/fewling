@@ -104,9 +104,9 @@ flowchart TB
 - **Tested & observable** — unit/integration tests across backends and web; crash reporting and analytics from day one.
 - **I build my own tooling** — custom Gradle convention plugins, Mason bricks, and agent skills.
 
-Across a polyglot stack:
+The stack, by layer:
 
-<img src="./assets/stack.svg" alt="Languages I ship in, by repository: Dart, TypeScript, Java, JavaScript, GDScript, Python, C++, Kotlin, ShaderLab, C# — across 81 repos spanning mobile, backends, game engines, shaders, and simulation" width="100%" />
+<img src="./assets/tech-stack.svg" alt="Tech stack by layer — mobile: Flutter, Dart, Kotlin (Android native), BLoC, go_router, Hive; backend: Spring Boot, Kotlin, Firebase Functions, TypeScript, OpenAPI; ai: Genkit, DeepSeek, Firebase AI Logic; cloud & data: Firestore, Firebase Auth, App Check, Remote Config, Crashlytics; web: Next.js, React, Tailwind; tooling: Gradle convention plugins, GitHub Actions, Mason, FVM" width="100%" />
 
 ---
 
