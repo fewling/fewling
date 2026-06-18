@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 150" width="900" height="150" role="img" aria-label="fewling — full-stack engineer; Android, end to end">
+  <title>fewling — full-stack engineer; Android, end to end</title>
+  <rect x="1" y="1" width="898" height="148" rx="14" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+  <text x="40" y="80" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="46" font-weight="600" fill="#e6edf3">fewling</text>
+  <rect x="240" y="50" width="14" height="34" fill="#5DCAA5">
+    <animate attributeName="opacity" values="1;1;0.12;0.12;1" dur="1.6s" repeatCount="indefinite"/>
+  </rect>
+  <text x="42" y="116" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" fill="#8b949e">full-stack engineer · android, end to end</text>
+  <rect x="42" y="130" width="118" height="3" fill="#1D9E75"/>
+  <polyline fill="none" stroke="#1D9E75" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points="500,62 513,56 526,70 539,44 552,78 565,40 578,80 591,52 604,66 617,42 630,82 643,54 656,72 669,46 682,78 695,38 708,76 721,58 734,68 747,48 760,80 773,52 786,70 799,44 812,76 825,60 838,64 851,56 864,62"/>
+  <polyline fill="none" stroke="#1D9E75" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0.3" points="500,62 513,70 526,54 539,80 552,44 565,82 578,40 591,72 604,56 617,80 630,44 643,74 656,50 669,78 682,46 695,80 708,42 721,70 734,58 747,78 760,46 773,76 786,52 799,80 812,46 825,68 838,60 851,72 864,62"/>
+</svg>

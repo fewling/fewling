@@ -1,8 +1,8 @@
-# fewling
+<img src="./assets/header.svg" alt="fewling — full-stack engineer; Android, end to end" width="100%" />
 
-Full-stack engineer. I build Android apps end to end — Flutter on the front, the
-API contract and backend behind it. Shipped **Floating Lyric** to the Play Store
-and a feature into the Flutter framework.
+I build Android apps end to end — Flutter on the front, the API contract and
+backend behind it. Shipped **Floating Lyric** to the Play Store and a feature
+into the Flutter framework.
 
 ---
 
@@ -13,7 +13,7 @@ Time-synced lyrics in a floating overlay that stays on top of any Android app.
 
 **The hard parts**
 
-- Renders a system overlay *over arbitrary foreground apps* — overlay permission
+- Renders a system overlay _over arbitrary foreground apps_ — overlay permission
   plus a foreground service that survives backgrounding.
 - Detects the currently-playing track by listening to Android's MediaSession /
   notifications — no per-app integration, works with any music app.
@@ -30,6 +30,7 @@ predictability, to escape vendor lock-in, to own the infrastructure and runtime,
 and to take backend ownership end to end.
 
 ```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'ui-monospace, SFMono-Regular, Menlo, monospace','primaryColor':'#161b22','mainBkg':'#161b22','primaryTextColor':'#e6edf3','nodeTextColor':'#e6edf3','primaryBorderColor':'#1D9E75','nodeBorder':'#1D9E75','lineColor':'#5DCAA5','textColor':'#adbac7','edgeLabelBackground':'#0d1117'}}}%%
 flowchart TD
     spec["OpenAPI spec — single source of truth"]
     gen["Generated Dart client package"]
@@ -52,12 +53,12 @@ flowchart TD
     web -.links to.-> play
 ```
 
-| Repo | Role |
-| --- | --- |
-| [flutter-floating-lyric-openapi](https://github.com/fewling/flutter-floating-lyric-openapi) | OpenAPI contract — single source of truth |
-| [flutter-floating-lyric-pkg-generated-openapi](https://github.com/fewling/flutter-floating-lyric-pkg-generated-openapi) | Generated Dart client package |
-| [floating-lyric-spring-boot](https://github.com/fewling/floating-lyric-spring-boot) | Spring Boot (Kotlin) backend — replacing Firebase |
-| [floating-lyric-web](https://github.com/fewling/floating-lyric-web) | Next.js marketing site |
+| Repo                                                                                                                    | Role                                              |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| [flutter-floating-lyric-openapi](https://github.com/fewling/flutter-floating-lyric-openapi)                             | OpenAPI contract — single source of truth         |
+| [flutter-floating-lyric-pkg-generated-openapi](https://github.com/fewling/flutter-floating-lyric-pkg-generated-openapi) | Generated Dart client package                     |
+| [floating-lyric-spring-boot](https://github.com/fewling/floating-lyric-spring-boot)                                     | Spring Boot (Kotlin) backend — replacing Firebase |
+| [floating-lyric-web](https://github.com/fewling/floating-lyric-web)                                                     | Next.js marketing site                            |
 
 ---
 
