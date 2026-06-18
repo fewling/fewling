@@ -120,12 +120,16 @@ The stack, by layer:
     <td><img src="https://skillicons.dev/icons?i=spring,nestjs,nodejs,firebase&theme=dark" height="44" alt="Spring Boot, NestJS, Node.js, Firebase" /> <img src="./assets/icons/openapi.svg" height="40" alt="OpenAPI" /></td>
   </tr>
   <tr>
+    <td align="right"><b>data</b></td>
+    <td><img src="https://skillicons.dev/icons?i=mongodb,postgres,mysql&theme=dark" height="44" alt="MongoDB, PostgreSQL, MySQL" /> <img src="./assets/icons/dbeaver.svg" height="40" alt="DBeaver" /></td>
+  </tr>
+  <tr>
     <td align="right"><b>cloud</b></td>
     <td><img src="https://skillicons.dev/icons?i=aws,gcp,firebase&theme=dark" height="44" alt="AWS, GCP, Firebase" /> <img src="./assets/icons/digitalocean.svg" height="40" alt="DigitalOcean" /></td>
   </tr>
   <tr>
     <td align="right"><b>devops</b></td>
-    <td><img src="https://skillicons.dev/icons?i=githubactions,docker&theme=dark" height="44" alt="GitHub Actions, Docker" /> <img src="./assets/icons/ccswitch.png" height="40" alt="cc-switch" /></td>
+    <td><img src="https://skillicons.dev/icons?i=githubactions,docker&theme=dark" height="44" alt="GitHub Actions, Docker" /> <img src="./assets/icons/ccswitch.png" height="40" alt="cc-switch" /> <img src="./assets/icons/claude.svg" height="40" alt="Claude Code" /> <img src="./assets/icons/codex.svg" height="40" alt="Codex" /></td>
   </tr>
   <tr>
     <td align="right"><b>ai</b></td>
