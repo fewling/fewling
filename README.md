@@ -104,8 +104,6 @@ flowchart TB
 - **Tested & observable** — unit/integration tests across backends and web; crash reporting and analytics from day one.
 - **I build my own tooling** — custom Gradle convention plugins, Mason bricks, and agent skills.
 
-The stack, by layer:
-
 <table>
   <tr>
     <td align="right"><b>languages</b></td>
@@ -113,7 +111,7 @@ The stack, by layer:
   </tr>
   <tr>
     <td align="right"><b>frontend</b></td>
-    <td><img src="https://skillicons.dev/icons?i=flutter,react,nextjs,tailwind&theme=dark" height="44" alt="Flutter, React, Next.js, Tailwind" /></td>
+    <td><img src="https://skillicons.dev/icons?i=flutter,react,nextjs,tailwind,materialui&theme=dark" height="44" alt="Flutter, React, Next.js, Tailwind, Material UI" /> <img src="./assets/icons/shadcn.svg" height="40" alt="shadcn/ui" /></td>
   </tr>
   <tr>
     <td align="right"><b>backend</b></td>
@@ -129,11 +127,19 @@ The stack, by layer:
   </tr>
   <tr>
     <td align="right"><b>devops</b></td>
-    <td><img src="https://skillicons.dev/icons?i=githubactions,docker&theme=dark" height="44" alt="GitHub Actions, Docker" /> <img src="./assets/icons/ccswitch.png" height="40" alt="cc-switch" /> <img src="./assets/icons/claude.svg" height="40" alt="Claude Code" /> <img src="./assets/icons/codex.svg" height="40" alt="Codex" /></td>
+    <td><img src="https://skillicons.dev/icons?i=githubactions,docker,git,gitlab&theme=dark" height="44" alt="GitHub Actions, Docker, Git, GitLab" /> <img src="./assets/icons/ccswitch.png" height="40" alt="cc-switch" /> <img src="./assets/icons/claude.svg" height="40" alt="Claude Code" /> <img src="./assets/icons/codex.svg" height="40" alt="Codex" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>testing</b></td>
+    <td><img src="https://skillicons.dev/icons?i=selenium,postman&theme=dark" height="44" alt="Selenium, Postman" /> <img src="./assets/icons/playwright.svg" height="40" alt="Playwright" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>tools</b></td>
+    <td><img src="https://skillicons.dev/icons?i=vscode,idea,pycharm,androidstudio,figma,ubuntu,windows,apple,raspberrypi,arduino&theme=dark" height="44" alt="VS Code, IntelliJ IDEA, PyCharm, Android Studio, Figma, Ubuntu, Windows, macOS, Raspberry Pi, Arduino" /> <img src="./assets/icons/cursor.svg" height="40" alt="Cursor" /> <img src="./assets/icons/xcode.svg" height="40" alt="Xcode" /></td>
   </tr>
   <tr>
     <td align="right"><b>ai</b></td>
-    <td><img src="https://skillicons.dev/icons?i=vercel&theme=dark" height="44" alt="Vercel AI SDK" /> <img src="./assets/icons/adk.png" height="40" alt="Google ADK" /> <img src="./assets/icons/genkit.png" height="40" alt="genkit" /> <img src="./assets/icons/n8n.svg" height="40" alt="n8n" /> <img src="./assets/icons/dify.svg" height="40" alt="dify" /></td>
+    <td><img src="https://skillicons.dev/icons?i=vercel&theme=dark" height="44" alt="Vercel AI SDK" /> <img src="./assets/icons/adk.png" height="40" alt="Google ADK" /> <img src="./assets/icons/genkit.png" height="40" alt="genkit" /> <img src="./assets/icons/openai.svg" height="40" alt="OpenAI" /> <img src="./assets/icons/anthropic.svg" height="40" alt="Anthropic / Claude" /> <img src="./assets/icons/gemini.svg" height="40" alt="Gemini" /> <img src="./assets/icons/n8n.svg" height="40" alt="n8n" /> <img src="./assets/icons/dify.svg" height="40" alt="dify" /> <img src="./assets/icons/comfyui.png" height="40" alt="ComfyUI" /></td>
   </tr>
 </table>
 
