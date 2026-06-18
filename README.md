@@ -88,12 +88,12 @@ flowchart TB
   AUTH --- LIBS
 ```
 
-| Repo                                                                                                                    | Role                                              |
-| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| [flutter-floating-lyric-openapi](https://github.com/fewling/flutter-floating-lyric-openapi)                             | OpenAPI contract — single source of truth         |
-| [flutter-floating-lyric-pkg-generated-openapi](https://github.com/fewling/flutter-floating-lyric-pkg-generated-openapi) | Generated Dart client package                     |
-| [floating-lyric-spring-boot](https://github.com/fewling/floating-lyric-spring-boot)                                     | Spring Boot (Kotlin) microservices backend        |
-| [floating-lyric-web](https://github.com/fewling/floating-lyric-web)                                                     | Next.js marketing site                            |
+| Repo                                                                                                                    | Role                                       |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| [flutter-floating-lyric-openapi](https://github.com/fewling/flutter-floating-lyric-openapi)                             | OpenAPI contract — single source of truth  |
+| [flutter-floating-lyric-pkg-generated-openapi](https://github.com/fewling/flutter-floating-lyric-pkg-generated-openapi) | Generated Dart client package              |
+| [floating-lyric-spring-boot](https://github.com/fewling/floating-lyric-spring-boot)                                     | Spring Boot (Kotlin) microservices backend |
+| [floating-lyric-web](https://github.com/fewling/floating-lyric-web)                                                     | Next.js marketing site                     |
 
 ---
 
@@ -106,7 +106,7 @@ flowchart TB
 
 The stack, by layer:
 
-<img src="./assets/tech-stack.svg" alt="Tech stack by layer — mobile: Flutter, Dart, Kotlin (Android native), BLoC, go_router, Hive; backend: Spring Boot, Kotlin, Firebase Functions, TypeScript, OpenAPI; ai: Genkit, DeepSeek, Firebase AI Logic; cloud & data: Firestore, Firebase Auth, App Check, Remote Config, Crashlytics; web: Next.js, React, Tailwind; tooling: Gradle convention plugins, GitHub Actions, Mason, FVM" width="100%" />
+<img src="./assets/tech-stack.svg" alt="Tech stack by layer — Frontend: Dart/Flutter, Java/Kotlin/Android, JS/TS/React/NextJS; Backend: Spring Boot, Firebase Suite, TypeScript, OpenAPI; AI: Vercel AI SDK, Google ADK, Genkit; Cloud & DevOps: AWS, GCP, Firebase, GitHub Actions;" width="100%" />
 
 ---
 
