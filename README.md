@@ -97,6 +97,19 @@ flowchart TB
 
 ---
 
+## How I work
+
+- **Spec-driven** — every project starts as a written spec + plan in the repo, before any code.
+- **Contract-first** — one schema generates the clients and types, so a polyglot system can't drift.
+- **Tested & observable** — unit/integration tests across backends and web; crash reporting and analytics from day one.
+- **I build my own tooling** — custom Gradle convention plugins, Mason bricks, and agent skills.
+
+Across a polyglot stack:
+
+<img src="./assets/stack.svg" alt="Languages I ship in, by repository: Dart, TypeScript, Java, JavaScript, GDScript, Python, C++, Kotlin, ShaderLab, C# — across 81 repos spanning mobile, backends, game engines, shaders, and simulation" width="100%" />
+
+---
+
 ## Open source
 
 **[flutter/flutter #168005](https://github.com/flutter/flutter/pull/168005)** —

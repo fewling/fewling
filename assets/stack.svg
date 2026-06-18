@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 140" width="900" height="140" role="img" aria-label="Languages I ship in, by repository: Dart, TypeScript, Java, JavaScript, GDScript, Python, C++, Kotlin, ShaderLab, C# — across 81 repos spanning mobile, backends, game engines, shaders, and simulation">
+  <title>Languages I ship in — by repository, across 81 repos</title>
+  <rect x="1" y="1" width="898" height="138" rx="14" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+  <text x="40" y="38" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#8b949e">languages i ship in</text>
+  <text x="860" y="38" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#56606b">10 languages · 81 repos</text>
+  <clipPath id="bar"><rect x="40" y="52" width="820" height="20" rx="6"/></clipPath>
+  <g clip-path="url(#bar)">
+    <rect x="40.0" y="52" width="381.2" height="20" fill="#1D9E75"/>
+    <rect x="421.1" y="52" width="150.1" height="20" fill="#5DCAA5"/>
+    <rect x="571.3" y="52" width="150.1" height="20" fill="#0F6E56"/>
+    <rect x="721.4" y="52" width="34.7" height="20" fill="#3bb389"/>
+    <rect x="756.1" y="52" width="23.1" height="20" fill="#9FE1CB"/>
+    <rect x="779.2" y="52" width="23.1" height="20" fill="#1D9E75"/>
+    <rect x="802.3" y="52" width="23.1" height="20" fill="#5DCAA5"/>
+    <rect x="825.4" y="52" width="11.5" height="20" fill="#0F6E56"/>
+    <rect x="836.9" y="52" width="11.5" height="20" fill="#3bb389"/>
+    <rect x="848.5" y="52" width="11.5" height="20" fill="#9FE1CB"/>
+  </g>
+  <text x="40" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#8b949e">Dart · TypeScript · Java · JavaScript · GDScript · Python · C++ · Kotlin · ShaderLab · C#</text>
+  <text x="40" y="122" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#56606b">mobile · backends · game engines · shaders · simulation</text>
+</svg>
