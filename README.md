@@ -108,20 +108,28 @@ The stack, by layer:
 
 <table>
   <tr>
+    <td align="right"><b>languages</b></td>
+    <td><img src="https://skillicons.dev/icons?i=dart,ts,js,java,kotlin,py,godot,cs&theme=dark" height="44" alt="Dart, TypeScript, JavaScript, Java, Kotlin, Python, GDScript (Godot), C#" /></td>
+  </tr>
+  <tr>
     <td align="right"><b>frontend</b></td>
-    <td><img src="https://skillicons.dev/icons?i=flutter,dart,java,kotlin,androidstudio,js,ts,react,nextjs&theme=dark" height="40" alt="Flutter, Dart, Java, Kotlin, Android, JavaScript, TypeScript, React, Next.js" /></td>
+    <td><img src="https://skillicons.dev/icons?i=flutter,react,nextjs,tailwind&theme=dark" height="44" alt="Flutter, React, Next.js, Tailwind" /></td>
   </tr>
   <tr>
     <td align="right"><b>backend</b></td>
-    <td><img src="https://skillicons.dev/icons?i=spring,firebase,nodejs,ts&theme=dark" height="40" alt="Spring Boot, Firebase, Node.js, TypeScript, OpenAPI" /></td>
+    <td><img src="https://skillicons.dev/icons?i=spring,nestjs,nodejs,firebase&theme=dark" height="44" alt="Spring Boot, NestJS, Node.js, Firebase" /> <img src="./assets/icons/openapi.svg" height="40" alt="OpenAPI" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>cloud</b></td>
+    <td><img src="https://skillicons.dev/icons?i=aws,gcp,firebase&theme=dark" height="44" alt="AWS, GCP, Firebase" /> <img src="./assets/icons/digitalocean.svg" height="40" alt="DigitalOcean" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>devops</b></td>
+    <td><img src="https://skillicons.dev/icons?i=githubactions,docker&theme=dark" height="44" alt="GitHub Actions, Docker" /> <img src="./assets/icons/ccswitch.png" height="40" alt="cc-switch" /></td>
   </tr>
   <tr>
     <td align="right"><b>ai</b></td>
-    <td><img src="https://skillicons.dev/icons?i=vercel,gcp,firebase&theme=dark" height="40" alt="Vercel AI SDK, Google ADK, Genkit" /></td>
-  </tr>
-  <tr>
-    <td align="right"><b>cloud &amp; devops</b></td>
-    <td><img src="https://skillicons.dev/icons?i=aws,gcp,firebase,githubactions&theme=dark" height="40" alt="AWS, GCP, Firebase, GitHub Actions" /></td>
+    <td><img src="https://skillicons.dev/icons?i=vercel&theme=dark" height="44" alt="Vercel AI SDK" /> <img src="./assets/icons/adk.png" height="40" alt="Google ADK" /> <img src="./assets/icons/genkit.png" height="40" alt="genkit" /> <img src="./assets/icons/n8n.svg" height="40" alt="n8n" /> <img src="./assets/icons/dify.svg" height="40" alt="dify" /></td>
   </tr>
 </table>
 
