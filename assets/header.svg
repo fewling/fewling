@@ -11,8 +11,8 @@
   <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">
     <rect x="286" y="48" width="104" height="28" rx="14" fill="#161b22" stroke="#1D9E75" stroke-width="1"/>
     <text x="338" y="66" text-anchor="middle" fill="#5DCAA5">fullstack</text>
-    <rect x="400" y="48" width="54" height="28" rx="14" fill="#161b22" stroke="#1D9E75" stroke-width="1"/>
-    <text x="427" y="66" text-anchor="middle" fill="#5DCAA5">web</text>
+    <rect x="400" y="48" width="54" height="28" rx="14" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <text x="427" y="66" text-anchor="middle" fill="#8b949e">web</text>
   </g>
   <text x="42" y="116" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#8b949e">mobile · backend · cloud · ai</text>
   <rect x="42" y="130" width="118" height="3" fill="#1D9E75"/>
