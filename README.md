@@ -106,7 +106,24 @@ flowchart TB
 
 The stack, by layer:
 
-<img src="./assets/tech-stack.svg" alt="Tech stack by layer — Frontend: Dart/Flutter, Java/Kotlin/Android, JS/TS/React/NextJS; Backend: Spring Boot, Firebase Suite, TypeScript, OpenAPI; AI: Vercel AI SDK, Google ADK, Genkit; Cloud & DevOps: AWS, GCP, Firebase, GitHub Actions;" width="100%" />
+<table>
+  <tr>
+    <td align="right"><b>frontend</b></td>
+    <td><img src="https://skillicons.dev/icons?i=flutter,dart,java,kotlin,androidstudio,js,ts,react,nextjs&theme=dark" height="40" alt="Flutter, Dart, Java, Kotlin, Android, JavaScript, TypeScript, React, Next.js" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>backend</b></td>
+    <td><img src="https://skillicons.dev/icons?i=spring,firebase,nodejs,ts&theme=dark" height="40" alt="Spring Boot, Firebase, Node.js, TypeScript, OpenAPI" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>ai</b></td>
+    <td><img src="https://skillicons.dev/icons?i=vercel,gcp,firebase&theme=dark" height="40" alt="Vercel AI SDK, Google ADK, Genkit" /></td>
+  </tr>
+  <tr>
+    <td align="right"><b>cloud &amp; devops</b></td>
+    <td><img src="https://skillicons.dev/icons?i=aws,gcp,firebase,githubactions&theme=dark" height="40" alt="AWS, GCP, Firebase, GitHub Actions" /></td>
+  </tr>
+</table>
 
 ---
 
