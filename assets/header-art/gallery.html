@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header void — three concepts</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --anthropic-dark: #141413; --anthropic-light: #faf9f5;
+            --anthropic-mid-gray: #b0aea5; --anthropic-light-gray: #e8e6dc;
+            --anthropic-orange: #d97757; --anthropic-blue: #6a9bcc; --anthropic-green: #788c5d;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, var(--anthropic-light) 0%, #f5f3ee 100%); min-height: 100vh; color: var(--anthropic-dark); }
+        .container { display: flex; min-height: 100vh; padding: 20px; gap: 20px; }
+        .sidebar { width: 300px; flex-shrink: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 24px; border-radius: 12px; box-shadow: 0 10px 30px rgba(20,20,19,0.1); overflow-y: auto; max-height: calc(100vh - 40px); }
+        .sidebar h1 { font-family: 'Lora', serif; font-size: 22px; font-weight: 500; margin-bottom: 8px; }
+        .sidebar .subtitle { color: var(--anthropic-mid-gray); font-size: 13px; margin-bottom: 28px; line-height: 1.4; }
+        .control-section { margin-bottom: 28px; }
+        .control-section h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .control-section h3::before { content: '•'; color: var(--anthropic-orange); font-weight: bold; }
+        .seed-input { width: 100%; background: var(--anthropic-light); padding: 11px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; margin-bottom: 10px; border: 1px solid var(--anthropic-light-gray); text-align: center; }
+        .seed-input:focus { outline: none; border-color: var(--anthropic-orange); background: white; }
+        .seed-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .control-group { margin-bottom: 18px; }
+        .control-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+        .slider-container { display: flex; align-items: center; gap: 10px; }
+        .slider-container input[type="range"] { flex: 1; height: 4px; background: var(--anthropic-light-gray); border-radius: 2px; outline: none; -webkit-appearance: none; }
+        .slider-container input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--anthropic-orange); border-radius: 50%; cursor: pointer; }
+        .slider-container input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; background: var(--anthropic-orange); border-radius: 50%; border: none; cursor: pointer; }
+        .value-display { font-family: 'Courier New', monospace; font-size: 12px; color: var(--anthropic-mid-gray); min-width: 36px; text-align: right; }
+        .color-group { margin-bottom: 14px; }
+        .color-group label { display: block; font-size: 12px; color: var(--anthropic-mid-gray); margin-bottom: 4px; }
+        .color-picker-container { display: flex; align-items: center; gap: 8px; }
+        .color-picker-container input[type="color"] { width: 30px; height: 30px; border: none; border-radius: 6px; cursor: pointer; background: none; padding: 0; }
+        .color-value { font-family: 'Courier New', monospace; font-size: 12px; color: var(--anthropic-mid-gray); }
+        .button { background: var(--anthropic-orange); color: white; border: none; padding: 10px 14px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; width: 100%; }
+        .button:hover { background: #c86641; }
+        .button.secondary { background: var(--anthropic-blue); }
+        .button.secondary:hover { background: #5a8bb8; }
+        .button.tertiary { background: var(--anthropic-green); }
+        .button.tertiary:hover { background: #6b7b52; }
+        .content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 22px; max-width: 1000px; }
+        .intro { font-size: 13px; color: var(--anthropic-mid-gray); line-height: 1.5; }
+        .intro b { color: var(--anthropic-dark); }
+        .concept { background: rgba(255,255,255,0.6); border-radius: 14px; padding: 14px; box-shadow: 0 8px 24px rgba(20,20,19,0.08); }
+        .concept-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+        .concept-head .idx { font-family: 'Courier New', monospace; font-size: 12px; color: var(--anthropic-orange); font-weight: 700; }
+        .concept-head h2 { font-family: 'Lora', serif; font-size: 18px; font-weight: 500; }
+        .concept-head .tag { font-size: 12px; color: var(--anthropic-mid-gray); }
+        .canvas-wrap { border-radius: 12px; overflow: hidden; box-shadow: 0 10px 26px rgba(20,20,19,0.22); }
+        .canvas-wrap canvas { display: block; width: 100% !important; height: auto !important; }
+        .desc { font-size: 12px; color: var(--anthropic-mid-gray); line-height: 1.5; margin-top: 10px; }
+        @media (max-width: 720px){ .container{ flex-direction: column; } .sidebar{ width:100%; max-height:none; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Header void — 3 concepts</h1>
+            <div class="subtitle">All three rendered in your real header, sharing one seed &amp; palette. Same seed → identical art (no drift). Pulse is the one subtle motion for the final SVG.</div>
+
+            <div class="control-section">
+                <h3>Seed</h3>
+                <input type="number" id="seed-input" class="seed-input" value="7" onchange="updateSeed()">
+                <div class="seed-controls">
+                    <button class="button secondary" onclick="previousSeed()">← Prev</button>
+                    <button class="button secondary" onclick="nextSeed()">Next →</button>
+                </div>
+                <button class="button tertiary" onclick="randomSeedAndUpdate()">↻ Random</button>
+            </div>
+
+            <div class="control-section">
+                <h3>Shared parameters</h3>
+                <div class="control-group">
+                    <label>Density</label>
+                    <div class="slider-container">
+                        <input type="range" id="density" min="0.3" max="1.5" step="0.05" value="0.9" oninput="updateParam('density', this.value)">
+                        <span class="value-display" id="density-value">0.9</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Detail</label>
+                    <div class="slider-container">
+                        <input type="range" id="detail" min="0.3" max="1.5" step="0.05" value="0.9" oninput="updateParam('detail', this.value)">
+                        <span class="value-display" id="detail-value">0.9</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Pulse speed (0 = static)</label>
+                    <div class="slider-container">
+                        <input type="range" id="pulse" min="0" max="1.5" step="0.05" value="0.45" oninput="updateParam('pulse', this.value)">
+                        <span class="value-display" id="pulse-value">0.45</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Colors</h3>
+                <div class="color-group">
+                    <label>Dim / lineage (contract green)</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color1" value="#1D9E75" onchange="updateColor('color1', this.value)">
+                        <span class="color-value" id="color1-value">#1D9E75</span>
+                    </div>
+                </div>
+                <div class="color-group">
+                    <label>Accent / glow</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color2" value="#5DCAA5" onchange="updateColor('color2', this.value)">
+                        <span class="color-value" id="color2-value">#5DCAA5</span>
+                    </div>
+                </div>
+                <div class="color-group">
+                    <label>Card background</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color3" value="#0d1117" onchange="updateColor('color3', this.value)">
+                        <span class="color-value" id="color3-value">#0d1117</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Actions</h3>
+                <button class="button" onclick="resetParameters()">Reset</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="intro">
+                Three ways to fill the empty right half. <b>1 · Deterministic Bloom</b> — a node graph generated from one source.
+                <b>2 · Circuit Routes</b> — orthogonal traces fanning out to terminal pads. <b>3 · Contour Field</b> — quiet topographic isolines.
+                Pick a concept + seed you like and I'll bake that exact frame into <b>header.svg</b>.
+            </div>
+
+            <div class="concept">
+                <div class="concept-head"><span class="idx">01</span><h2>Deterministic Bloom</h2><span class="tag">one source → synced lattice, no drift</span></div>
+                <div class="canvas-wrap" id="canvas-bloom"></div>
+                <div class="desc">A root node (the contract) propagates rightward through generations; faint lineage threads prove each downstream node was generated from the source. Glowing leaves = the polyglot clients. Closest in spirit to your mermaid diagram.</div>
+            </div>
+
+            <div class="concept">
+                <div class="concept-head"><span class="idx">02</span><h2>Circuit Routes</h2><span class="tag">contract → endpoints, Manhattan routing</span></div>
+                <div class="canvas-wrap" id="canvas-circuit"></div>
+                <div class="desc">PCB-style orthogonal traces leave the wordmark and route out to terminal vias on the right edge. Reads unmistakably as an engineer's header; the pulse becomes current flowing along each trace.</div>
+            </div>
+
+            <div class="concept">
+                <div class="concept-head"><span class="idx">03</span><h2>Contour Field</h2><span class="tag">topographic isolines, quietest option</span></div>
+                <div class="canvas-wrap" id="canvas-contour"></div>
+                <div class="desc">Marching-squares isolines over a seeded scalar field — a calm data terrain. The most restrained / textural of the three; carries the least narrative but the most negative space.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ════════════════════ shared state ════════════════════
+    const W = 900, H = 150;
+    const ORIGIN_X = 432, ORIGIN_Y = 75, RIGHT_BOUND = 872, TOP = 24, BOT = 128;
+
+    let PARAMS = {
+        seed: 7, density: 0.9, detail: 0.9, pulse: 0.45,
+        colorPalette: ['#1D9E75', '#5DCAA5', '#0d1117']
+    };
+    const DEFAULTS = JSON.parse(JSON.stringify(PARAMS));
+
+    function hexRgb(h){ h = h.replace('#',''); return [parseInt(h.substr(0,2),16), parseInt(h.substr(2,2),16), parseInt(h.substr(4,2),16)]; }
+    function pulseFactor(x, fc){
+        if (PARAMS.pulse <= 0.0001) return 1;
+        const t = fc * 0.02 * PARAMS.pulse;
+        const phase = (x - ORIGIN_X) / (RIGHT_BOUND - ORIGIN_X);
+        const w = 0.5 + 0.5 * Math.sin(phase * Math.PI * 2 - t * Math.PI * 2);
+        return 0.45 + 0.55 * Math.pow(w, 2.2);
+    }
+
+    // Shared: replicate the existing header.svg left content + card.
+    function drawShell(s, acc){
+        const bg = PARAMS.colorPalette[2];
+        s.background(bg);
+        s.noFill(); s.stroke('#21262d'); s.strokeWeight(1);
+        s.rect(1, 1, W - 2, H - 2, 14);
+    }
+    function drawLeftHeader(s, acc){
+        const [ar, ag, ab] = acc;
+        s.noStroke();
+        s.fill('#e6edf3'); s.textSize(46); s.textStyle(s.BOLD); s.textAlign(s.LEFT, s.BASELINE);
+        s.text('fewling', 40, 80); s.textStyle(s.NORMAL);
+        const blink = (Math.floor(s.frameCount / 48) % 2 === 0) ? 1 : 0.12;
+        s.fill(ar, ag, ab, 255 * blink); s.rect(240, 50, 14, 34);
+        s.noFill(); s.stroke('#1D9E75'); s.strokeWeight(1); s.fill('#161b22');
+        s.rect(286, 48, 104, 28, 14);
+        s.noStroke(); s.fill(ar, ag, ab); s.textSize(14); s.textAlign(s.CENTER, s.BASELINE);
+        s.text('fullstack', 338, 66);
+        s.fill('#8b949e'); s.textSize(16); s.textAlign(s.LEFT, s.BASELINE);
+        s.text('mobile · web · backend · cloud · ai', 42, 116);
+        s.fill('#1D9E75'); s.rect(42, 130, 118, 3);
+    }
+
+    // ════════════════════ 01 · BLOOM ════════════════════
+    const bloomSketch = (s) => {
+        let nodes = [], edges = [];
+        s.setup = () => { const c = s.createCanvas(W, H); c.parent('canvas-bloom'); s.pixelDensity(2); s.textFont('ui-monospace, Menlo, monospace'); build(); };
+        s.rebuild = build;
+        function build(){
+            s.randomSeed(PARAMS.seed); s.noiseSeed(PARAMS.seed);
+            nodes = []; edges = [];
+            const generations = Math.round(s.constrain(3 + PARAMS.detail * 2.8, 2, 7));
+            const branching = 1.4 + PARAMS.density * 1.1;
+            const GOLDEN = 2.399963;
+            const root = { x: ORIGIN_X, y: ORIGIN_Y, depth: 0, children: 0, ang: 0 };
+            nodes.push(root);
+            let frontier = [root];
+            const xStep = (RIGHT_BOUND - ORIGIN_X) / generations;
+            for (let g = 1; g <= generations; g++){
+                const next = [];
+                for (const p of frontier){
+                    let base = Math.floor(branching);
+                    let n = Math.max(1, base + ((s.random() < branching - base) ? 1 : 0));
+                    if (g === generations && s.random() < 0.35) n = Math.max(1, n - 1);
+                    for (let i = 0; i < n; i++){
+                        p.ang += GOLDEN;
+                        const fan = (n === 1) ? 0 : (i - (n - 1) / 2) / Math.max(1, n - 1);
+                        const nx = (p.x + i * 17) * 0.012, ny = (p.y + g * 23) * 0.012;
+                        let dy = fan * (38 * (0.5 + PARAMS.density * 0.6)) * (1 - 0.10 * g) + (s.noise(nx, ny) - 0.5) * 46 * (0.4 + PARAMS.detail * 0.5);
+                        const dx = xStep * (0.62 + 0.5 * s.noise(nx + 11, ny + 7));
+                        const cx = s.constrain(p.x + dx, ORIGIN_X, RIGHT_BOUND);
+                        const cy = s.constrain(p.y + dy, TOP, BOT);
+                        const child = { x: cx, y: cy, depth: g, children: 0, ang: p.ang };
+                        p.children++; nodes.push(child); edges.push({ a: p, b: child, depth: g }); next.push(child);
+                    }
+                }
+                frontier = next;
+                if (nodes.length > 240) break;
+            }
+            for (let it = 0; it < 14; it++)
+                for (let i = 0; i < nodes.length; i++)
+                    for (let j = i + 1; j < nodes.length; j++){
+                        const a = nodes[i], b = nodes[j];
+                        if (Math.abs(a.x - b.x) > 26) continue;
+                        const dy = b.y - a.y, d = Math.abs(dy);
+                        if (d < 13 && d > 0.0001){ const push = (13 - d) * 0.5, sg = dy > 0 ? 1 : -1;
+                            if (a.depth) a.y = s.constrain(a.y - sg * push, TOP, BOT);
+                            if (b.depth) b.y = s.constrain(b.y + sg * push, TOP, BOT); }
+                    }
+            const maxD = generations;
+            for (const nd of nodes) nd.isLeaf = (nd.depth > 0 && nd.children === 0);
+            s._maxD = maxD;
+        }
+        s.draw = () => {
+            const acc = hexRgb(PARAMS.colorPalette[1]), dim = hexRgb(PARAMS.colorPalette[0]);
+            drawShell(s, acc);
+            const maxD = s._maxD || 5;
+            for (const e of edges){
+                const df = s.map(e.depth, 1, maxD, 1.0, 0.45);
+                s.stroke(dim[0], dim[1], dim[2], 255 * 0.28 * df * pulseFactor(e.b.x, s.frameCount));
+                s.strokeWeight(s.map(e.depth, 1, maxD, 1.4, 0.7)); s.noFill();
+                const mx = (e.a.x + e.b.x) / 2;
+                s.bezier(e.a.x, e.a.y, mx, e.a.y, mx, e.b.y, e.b.x, e.b.y);
+            }
+            s.noStroke();
+            for (const nd of nodes){
+                const pf = pulseFactor(nd.x, s.frameCount);
+                if (nd.depth === 0){ s.fill(acc[0],acc[1],acc[2],235); s.circle(nd.x,nd.y,7.5);
+                    s.noFill(); s.stroke(acc[0],acc[1],acc[2],90*pf); s.strokeWeight(1); s.circle(nd.x,nd.y,13); s.noStroke();
+                } else if (nd.isLeaf){ s.fill(acc[0],acc[1],acc[2],55*pf); s.circle(nd.x,nd.y,11);
+                    s.fill(acc[0],acc[1],acc[2],235); s.circle(nd.x,nd.y,4.2);
+                } else { const f = s.map(nd.depth,1,maxD,200,110)*(0.6+0.4*pf);
+                    s.fill(dim[0],dim[1],dim[2],f); s.circle(nd.x,nd.y,s.map(nd.depth,1,maxD,4.2,2.6)); }
+            }
+            drawLeftHeader(s, acc);
+        };
+    };
+
+    // ════════════════════ 02 · CIRCUIT ════════════════════
+    const circuitSketch = (s) => {
+        let routes = [];
+        s.setup = () => { const c = s.createCanvas(W, H); c.parent('canvas-circuit'); s.pixelDensity(2); s.textFont('ui-monospace, Menlo, monospace'); build(); };
+        s.rebuild = build;
+        function build(){
+            s.randomSeed(PARAMS.seed); s.noiseSeed(PARAMS.seed + 99);
+            routes = [];
+            const count = Math.round(3 + PARAMS.density * 6);
+            const jogs = Math.round(1 + PARAMS.detail * 3);
+            for (let r = 0; r < count; r++){
+                const lane = s.map(r, 0, count - 1, TOP + 8, BOT - 8) + (s.random() - 0.5) * 8;
+                const targetX = s.map(r % 3, 0, 2, RIGHT_BOUND - 70, RIGHT_BOUND - 6) + (s.random() - 0.5) * 24;
+                const pts = [{ x: ORIGIN_X, y: ORIGIN_Y }];
+                let cx = ORIGIN_X + 14 + s.random() * 18, cy = ORIGIN_Y;
+                pts.push({ x: cx, y: cy });
+                // staircase toward (targetX, lane)
+                for (let k = 0; k < jogs; k++){
+                    const ty = s.lerp(cy, lane, (k + 1) / jogs) + (s.random() - 0.5) * 10;
+                    pts.push({ x: cx, y: ty }); cy = ty;
+                    cx = s.lerp(cx, targetX, (k + 1) / (jogs + 0.5)) + (s.random() - 0.5) * 14;
+                    cx = s.constrain(cx, ORIGIN_X + 10, targetX);
+                    pts.push({ x: cx, y: cy });
+                }
+                pts.push({ x: cx, y: lane }); pts.push({ x: targetX, y: lane });
+                // cumulative length for pulse travel
+                let len = 0; const segLen = [0];
+                for (let i = 1; i < pts.length; i++){ len += Math.hypot(pts[i].x - pts[i-1].x, pts[i].y - pts[i-1].y); segLen.push(len); }
+                routes.push({ pts, segLen, total: len, end: { x: targetX, y: lane } });
+            }
+        }
+        function travelPoint(rt, frac){
+            const target = frac * rt.total;
+            for (let i = 1; i < rt.pts.length; i++){
+                if (rt.segLen[i] >= target){
+                    const t = (target - rt.segLen[i-1]) / Math.max(0.001, rt.segLen[i] - rt.segLen[i-1]);
+                    return { x: s.lerp(rt.pts[i-1].x, rt.pts[i].x, t), y: s.lerp(rt.pts[i-1].y, rt.pts[i].y, t) };
+                }
+            }
+            return rt.end;
+        }
+        s.draw = () => {
+            const acc = hexRgb(PARAMS.colorPalette[1]), dim = hexRgb(PARAMS.colorPalette[0]);
+            drawShell(s, acc);
+            s.strokeJoin(s.ROUND); s.strokeCap(s.ROUND); s.noFill();
+            // traces
+            for (const rt of routes){
+                s.stroke(dim[0], dim[1], dim[2], 95); s.strokeWeight(1.3);
+                s.beginShape(); for (const p of rt.pts) s.vertex(p.x, p.y); s.endShape();
+                // junction dots
+                s.noStroke(); s.fill(dim[0], dim[1], dim[2], 120);
+                for (let i = 1; i < rt.pts.length - 1; i++) s.circle(rt.pts[i].x, rt.pts[i].y, 2.4);
+                s.noFill();
+            }
+            // origin pad (the contract)
+            s.noStroke(); s.fill(acc[0],acc[1],acc[2],235); s.rectMode(s.CENTER); s.rect(ORIGIN_X, ORIGIN_Y, 8, 8, 1.5); s.rectMode(s.CORNER);
+            // travelling current
+            if (PARAMS.pulse > 0.0001){
+                const frac = (s.frameCount * 0.006 * PARAMS.pulse) % 1.2;
+                for (const rt of routes){
+                    if (frac > 1) continue;
+                    const p = travelPoint(rt, frac);
+                    s.noStroke(); s.fill(acc[0],acc[1],acc[2], 200 * (1 - Math.abs(frac - 0.5) * 0.6));
+                    s.circle(p.x, p.y, 3.4);
+                }
+            }
+            // terminal vias (generated endpoints)
+            for (const rt of routes){
+                const e = rt.end, pf = pulseFactor(e.x, s.frameCount);
+                s.noStroke(); s.fill(acc[0],acc[1],acc[2],50*pf); s.circle(e.x, e.y, 12);
+                s.fill('#0d1117'); s.circle(e.x, e.y, 6.4);
+                s.noFill(); s.stroke(acc[0],acc[1],acc[2],200); s.strokeWeight(1.4); s.circle(e.x, e.y, 6.4);
+            }
+            drawLeftHeader(s, acc);
+        };
+    };
+
+    // ════════════════════ 03 · CONTOUR ════════════════════
+    const contourSketch = (s) => {
+        let segs = [];
+        s.setup = () => { const c = s.createCanvas(W, H); c.parent('canvas-contour'); s.pixelDensity(2); s.textFont('ui-monospace, Menlo, monospace'); build(); };
+        s.rebuild = build;
+        function build(){
+            s.randomSeed(PARAMS.seed); s.noiseSeed(PARAMS.seed + 7);
+            segs = [];
+            const X0 = ORIGIN_X - 6, X1 = RIGHT_BOUND + 4, Y0 = TOP - 4, Y1 = BOT + 4;
+            const peakN = Math.round(2 + PARAMS.density * 3);
+            const peaks = [];
+            for (let i = 0; i < peakN; i++)
+                peaks.push({ x: s.random(X0 + 20, X1 - 10), y: s.random(Y0 + 10, Y1 - 10), s: s.random(26, 60), w: s.random(0.7, 1.3) });
+            const field = (x, y) => {
+                let v = 0;
+                for (const p of peaks){ const d2 = (x-p.x)*(x-p.x) + (y-p.y)*(y-p.y); v += p.w * Math.exp(-d2 / (2 * p.s * p.s)); }
+                v += 0.12 * s.noise(x * 0.02, y * 0.02);
+                return v;
+            };
+            const levelN = Math.round(4 + PARAMS.detail * 7);
+            const levels = [];
+            for (let i = 1; i <= levelN; i++) levels.push((i / (levelN + 1)) * 1.0);
+            const cell = 7;
+            for (let gy = Y0; gy < Y1 - cell; gy += cell)
+                for (let gx = X0; gx < X1 - cell; gx += cell){
+                    const a = field(gx,gy), b = field(gx+cell,gy), cc = field(gx+cell,gy+cell), d = field(gx,gy+cell);
+                    for (let li = 0; li < levels.length; li++){
+                        const lv = levels[li];
+                        let idx = 0; if (a>lv) idx|=8; if (b>lv) idx|=4; if (cc>lv) idx|=2; if (d>lv) idx|=1;
+                        if (idx === 0 || idx === 15) continue;
+                        const T = () => ({ x: lerpE(gx, gx+cell, a, b, lv), y: gy });
+                        const R = () => ({ x: gx+cell, y: lerpE(gy, gy+cell, b, cc, lv) });
+                        const B = () => ({ x: lerpE(gx, gx+cell, d, cc, lv), y: gy+cell });
+                        const L = () => ({ x: gx, y: lerpE(gy, gy+cell, a, d, lv) });
+                        const add = (p,q) => segs.push({ x1:p.x, y1:p.y, x2:q.x, y2:q.y, lvl: li / levels.length, cx: (p.x+q.x)/2 });
+                        switch(idx){
+                            case 1: case 14: add(L(),B()); break;
+                            case 2: case 13: add(B(),R()); break;
+                            case 3: case 12: add(L(),R()); break;
+                            case 4: case 11: add(T(),R()); break;
+                            case 6: case 9: add(T(),B()); break;
+                            case 7: case 8: add(T(),L()); break;
+                            case 5: add(T(),L()); add(B(),R()); break;
+                            case 10: add(T(),R()); add(L(),B()); break;
+                        }
+                    }
+                }
+        }
+        function lerpE(p1, p2, v1, v2, lv){ const t = (lv - v1) / (v2 - v1); return p1 + t * (p2 - p1); }
+        s.draw = () => {
+            const acc = hexRgb(PARAMS.colorPalette[1]), dim = hexRgb(PARAMS.colorPalette[0]);
+            drawShell(s, acc);
+            s.strokeWeight(1);
+            for (const sg of segs){
+                const pf = pulseFactor(sg.cx, s.frameCount);
+                // inner rings (high level) brighten toward accent; outer rings stay dim
+                const mix = sg.lvl;
+                const r = s.lerp(dim[0], acc[0], mix), g = s.lerp(dim[1], acc[1], mix), b = s.lerp(dim[2], acc[2], mix);
+                const a = (40 + 120 * mix) * pf;
+                s.stroke(r, g, b, a);
+                s.line(sg.x1, sg.y1, sg.x2, sg.y2);
+            }
+            drawLeftHeader(s, acc);
+        };
+    };
+
+    let pBloom = new p5(bloomSketch);
+    let pCircuit = new p5(circuitSketch);
+    let pContour = new p5(contourSketch);
+    function rebuildAll(){ [pBloom, pCircuit, pContour].forEach(p => p.rebuild && p.rebuild()); }
+
+    // ════════════════════ UI ════════════════════
+    function updateParam(name, value){ PARAMS[name] = parseFloat(value); document.getElementById(name + '-value').textContent = value; if (name !== 'pulse') rebuildAll(); }
+    function updateColor(id, value){ const idx = { color1:0, color2:1, color3:2 }[id]; PARAMS.colorPalette[idx] = value; document.getElementById(id + '-value').textContent = value; }
+    function updateSeedDisplay(){ document.getElementById('seed-input').value = PARAMS.seed; }
+    function updateSeed(){ const v = parseInt(document.getElementById('seed-input').value); if (v && v > 0){ PARAMS.seed = v; rebuildAll(); } else updateSeedDisplay(); }
+    function previousSeed(){ PARAMS.seed = Math.max(1, PARAMS.seed - 1); updateSeedDisplay(); rebuildAll(); }
+    function nextSeed(){ PARAMS.seed += 1; updateSeedDisplay(); rebuildAll(); }
+    function randomSeedAndUpdate(){ PARAMS.seed = Math.floor(Math.random() * 999999) + 1; updateSeedDisplay(); rebuildAll(); }
+    function resetParameters(){
+        PARAMS = JSON.parse(JSON.stringify(DEFAULTS));
+        for (const k of ['density','detail','pulse']){ document.getElementById(k).value = PARAMS[k]; document.getElementById(k + '-value').textContent = PARAMS[k]; }
+        ['color1','color2','color3'].forEach((id,i) => { document.getElementById(id).value = PARAMS.colorPalette[i]; document.getElementById(id + '-value').textContent = PARAMS.colorPalette[i]; });
+        updateSeedDisplay(); rebuildAll();
+    }
+    window.addEventListener('load', updateSeedDisplay);
+    </script>
+</body>
+</html>

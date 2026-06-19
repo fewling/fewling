@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deterministic Bloom — header explorer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Anthropic Brand Colors (UI chrome only — the art uses fewling's palette) */
+        :root {
+            --anthropic-dark: #141413;
+            --anthropic-light: #faf9f5;
+            --anthropic-mid-gray: #b0aea5;
+            --anthropic-light-gray: #e8e6dc;
+            --anthropic-orange: #d97757;
+            --anthropic-blue: #6a9bcc;
+            --anthropic-green: #788c5d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--anthropic-light) 0%, #f5f3ee 100%);
+            min-height: 100vh;
+            color: var(--anthropic-dark);
+        }
+
+        .container { display: flex; min-height: 100vh; padding: 20px; gap: 20px; }
+
+        .sidebar {
+            width: 320px; flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(20, 20, 19, 0.1);
+            overflow-y: auto; overflow-x: hidden;
+            max-height: calc(100vh - 40px);
+        }
+
+        .sidebar h1 { font-family: 'Lora', serif; font-size: 24px; font-weight: 500; color: var(--anthropic-dark); margin-bottom: 8px; }
+        .sidebar .subtitle { color: var(--anthropic-mid-gray); font-size: 14px; margin-bottom: 32px; line-height: 1.4; }
+
+        .control-section { margin-bottom: 32px; }
+        .control-section h3 { font-size: 16px; font-weight: 600; color: var(--anthropic-dark); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .control-section h3::before { content: '•'; color: var(--anthropic-orange); font-weight: bold; }
+
+        .seed-input { width: 100%; background: var(--anthropic-light); padding: 12px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; margin-bottom: 12px; border: 1px solid var(--anthropic-light-gray); text-align: center; }
+        .seed-input:focus { outline: none; border-color: var(--anthropic-orange); box-shadow: 0 0 0 2px rgba(217, 119, 87, 0.1); background: white; }
+        .seed-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .regen-button { margin-bottom: 0; }
+
+        .control-group { margin-bottom: 20px; }
+        .control-group label { display: block; font-size: 14px; font-weight: 500; color: var(--anthropic-dark); margin-bottom: 8px; }
+        .slider-container { display: flex; align-items: center; gap: 12px; }
+        .slider-container input[type="range"] { flex: 1; height: 4px; background: var(--anthropic-light-gray); border-radius: 2px; outline: none; -webkit-appearance: none; }
+        .slider-container input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--anthropic-orange); border-radius: 50%; cursor: pointer; transition: all 0.2s ease; }
+        .slider-container input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); background: #c86641; }
+        .slider-container input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; background: var(--anthropic-orange); border-radius: 50%; border: none; cursor: pointer; }
+        .value-display { font-family: 'Courier New', monospace; font-size: 12px; color: var(--anthropic-mid-gray); min-width: 52px; text-align: right; }
+
+        .color-group { margin-bottom: 16px; }
+        .color-group label { display: block; font-size: 12px; color: var(--anthropic-mid-gray); margin-bottom: 4px; }
+        .color-picker-container { display: flex; align-items: center; gap: 8px; }
+        .color-picker-container input[type="color"] { width: 32px; height: 32px; border: none; border-radius: 6px; cursor: pointer; background: none; padding: 0; }
+        .color-value { font-family: 'Courier New', monospace; font-size: 12px; color: var(--anthropic-mid-gray); }
+
+        .button { background: var(--anthropic-orange); color: white; border: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; width: 100%; }
+        .button:hover { background: #c86641; transform: translateY(-1px); }
+        .button:active { transform: translateY(0); }
+        .button.secondary { background: var(--anthropic-blue); }
+        .button.secondary:hover { background: #5a8bb8; }
+        .button.tertiary { background: var(--anthropic-green); }
+        .button.tertiary:hover { background: #6b7b52; }
+        .button-row { display: flex; gap: 8px; }
+        .button-row .button { flex: 1; }
+
+        .canvas-area { flex: 1; display: flex; align-items: flex-start; justify-content: center; min-width: 0; padding-top: 8px; }
+        .stage { width: 100%; max-width: 1000px; display: flex; flex-direction: column; gap: 16px; }
+        #canvas-container { width: 100%; border-radius: 14px; overflow: hidden; box-shadow: 0 20px 40px rgba(20, 20, 19, 0.25); }
+        #canvas-container canvas { display: block; width: 100% !important; height: auto !important; }
+        .caption { font-size: 13px; color: var(--anthropic-mid-gray); line-height: 1.5; }
+        .caption b { color: var(--anthropic-dark); font-weight: 600; }
+        .loading { display: flex; align-items: center; justify-content: center; height: 150px; font-size: 16px; color: var(--anthropic-mid-gray); }
+
+        @media (max-width: 700px) {
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Control Sidebar -->
+        <div class="sidebar">
+            <h1>Deterministic Bloom</h1>
+            <div class="subtitle">One source, no drift. A lattice generated from a single seed to fill the header's empty right half.</div>
+
+            <!-- Seed Section -->
+            <div class="control-section">
+                <h3>Seed</h3>
+                <input type="number" id="seed-input" class="seed-input" value="7" onchange="updateSeed()">
+                <div class="seed-controls">
+                    <button class="button secondary" onclick="previousSeed()">← Prev</button>
+                    <button class="button secondary" onclick="nextSeed()">Next →</button>
+                </div>
+                <button class="button tertiary regen-button" onclick="randomSeedAndUpdate()">↻ Random</button>
+            </div>
+
+            <!-- Parameters Section -->
+            <div class="control-section">
+                <h3>Parameters</h3>
+
+                <div class="control-group">
+                    <label>Generations</label>
+                    <div class="slider-container">
+                        <input type="range" id="generations" min="2" max="7" step="1" value="5" oninput="updateParam('generations', this.value)">
+                        <span class="value-display" id="generations-value">5</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Branching</label>
+                    <div class="slider-container">
+                        <input type="range" id="branching" min="1.4" max="3" step="0.1" value="2.1" oninput="updateParam('branching', this.value)">
+                        <span class="value-display" id="branching-value">2.1</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Spread</label>
+                    <div class="slider-container">
+                        <input type="range" id="spread" min="0.3" max="1.6" step="0.05" value="0.95" oninput="updateParam('spread', this.value)">
+                        <span class="value-display" id="spread-value">0.95</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Organic perturbation</label>
+                    <div class="slider-container">
+                        <input type="range" id="wobble" min="0" max="1.4" step="0.05" value="0.6" oninput="updateParam('wobble', this.value)">
+                        <span class="value-display" id="wobble-value">0.6</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Lineage opacity</label>
+                    <div class="slider-container">
+                        <input type="range" id="lineage" min="0.05" max="0.6" step="0.01" value="0.28" oninput="updateParam('lineage', this.value)">
+                        <span class="value-display" id="lineage-value">0.28</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Leaf glow</label>
+                    <div class="slider-container">
+                        <input type="range" id="glow" min="0" max="1" step="0.05" value="0.7" oninput="updateParam('glow', this.value)">
+                        <span class="value-display" id="glow-value">0.7</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Pulse speed (0 = static)</label>
+                    <div class="slider-container">
+                        <input type="range" id="pulse" min="0" max="1.5" step="0.05" value="0.5" oninput="updateParam('pulse', this.value)">
+                        <span class="value-display" id="pulse-value">0.5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colors Section -->
+            <div class="control-section">
+                <h3>Colors</h3>
+                <div class="color-group">
+                    <label>Lineage / dim (contract green)</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color1" value="#1D9E75" onchange="updateColor('color1', this.value)">
+                        <span class="color-value" id="color1-value">#1D9E75</span>
+                    </div>
+                </div>
+                <div class="color-group">
+                    <label>Leaf glow / accent</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color2" value="#5DCAA5" onchange="updateColor('color2', this.value)">
+                        <span class="color-value" id="color2-value">#5DCAA5</span>
+                    </div>
+                </div>
+                <div class="color-group">
+                    <label>Card background</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="color3" value="#0d1117" onchange="updateColor('color3', this.value)">
+                        <span class="color-value" id="color3-value">#0d1117</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Section -->
+            <div class="control-section">
+                <h3>Actions</h3>
+                <div class="button-row">
+                    <button class="button" onclick="resetParameters()">Reset</button>
+                    <button class="button tertiary" onclick="downloadPNG()">Download PNG</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Canvas Area -->
+        <div class="canvas-area">
+            <div class="stage">
+                <div id="canvas-container">
+                    <div class="loading">Initializing…</div>
+                </div>
+                <div class="caption">
+                    Live preview of the <b>full README header</b> — existing left content untouched, the
+                    <b>Deterministic Bloom</b> filling the empty right half. Same seed always grows the
+                    identical lattice (no drift). Cycle seeds to find a composition you like, then I can
+                    bake that exact seed + parameters into a static <b>header.svg</b>.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════
+        // PARAMETERS
+        // ═══════════════════════════════════════════════════════════════════════
+        let params = {
+            seed: 7,
+            generations: 5,
+            branching: 2.1,
+            spread: 0.95,
+            wobble: 0.6,
+            lineage: 0.28,
+            glow: 0.7,
+            pulse: 0.5,
+            colorPalette: ['#1D9E75', '#5DCAA5', '#0d1117']
+        };
+        let defaultParams = JSON.parse(JSON.stringify(params));
+
+        // Header geometry (matches assets/header.svg viewBox 900x150)
+        const W = 900, H = 150;
+        const ORIGIN_X = 432, ORIGIN_Y = 75;   // bloom root, just right of the chip
+        const RIGHT_BOUND = 872;
+        const TOP_BOUND = 24, BOT_BOUND = 128;
+
+        let nodes = [];
+        let edges = [];
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SETUP
+        // ═══════════════════════════════════════════════════════════════════════
+        function setup() {
+            let canvas = createCanvas(W, H);
+            canvas.parent('canvas-container');
+            pixelDensity(2);
+            textFont('ui-monospace, SFMono-Regular, Menlo, monospace');
+            buildBloom();
+            const l = document.querySelector('.loading');
+            if (l) l.style.display = 'none';
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // BLOOM CONSTRUCTION — deterministic propagation from a single origin
+        // ═══════════════════════════════════════════════════════════════════════
+        function buildBloom() {
+            randomSeed(params.seed);
+            noiseSeed(params.seed);
+
+            nodes = [];
+            edges = [];
+
+            const GOLDEN = 2.399963;   // golden angle (radians)
+            const root = { x: ORIGIN_X, y: ORIGIN_Y, depth: 0, parent: null, children: 0, ang: 0 };
+            nodes.push(root);
+
+            let frontier = [root];
+            const xStep = (RIGHT_BOUND - ORIGIN_X) / params.generations;
+
+            for (let g = 1; g <= params.generations; g++) {
+                const next = [];
+                for (const p of frontier) {
+                    // deterministic child count from branching factor
+                    let base = Math.floor(params.branching);
+                    let extra = (random() < (params.branching - base)) ? 1 : 0;
+                    let n = Math.max(1, base + extra);
+                    // taper the canopy slightly at the deepest generations
+                    if (g === params.generations && random() < 0.35) n = Math.max(1, n - 1);
+
+                    for (let i = 0; i < n; i++) {
+                        p.ang += GOLDEN;
+                        const fan = (n === 1) ? 0 : (i - (n - 1) / 2) / Math.max(1, (n - 1));
+                        // structured vertical fan, scaled by spread, shrinking with depth
+                        const depthDamp = 1 - 0.10 * g;
+                        let dy = fan * (38 * params.spread) * depthDamp;
+                        // organic perturbation from one shared noise field (same seed)
+                        const nx = (p.x + i * 17) * 0.012;
+                        const ny = (p.y + g * 23) * 0.012;
+                        dy += (noise(nx, ny) - 0.5) * 46 * params.wobble;
+                        const dx = xStep * (0.62 + 0.5 * noise(nx + 11, ny + 7));
+
+                        let cx = p.x + dx;
+                        let cy = p.y + dy;
+                        cy = constrain(cy, TOP_BOUND, BOT_BOUND);
+                        cx = constrain(cx, ORIGIN_X, RIGHT_BOUND);
+
+                        const child = { x: cx, y: cy, depth: g, parent: p, children: 0, ang: p.ang };
+                        p.children++;
+                        nodes.push(child);
+                        edges.push({ a: p, b: child, depth: g });
+                        next.push(child);
+                    }
+                }
+                frontier = next;
+                if (nodes.length > 240) break; // safety cap
+            }
+
+            relax();
+            // mark terminal nodes (the "generated clients")
+            for (const nd of nodes) nd.isLeaf = (nd.depth > 0 && nd.children === 0);
+        }
+
+        // Light relaxation: push same-generation siblings apart in y so nothing collides.
+        function relax() {
+            for (let iter = 0; iter < 14; iter++) {
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const a = nodes[i], b = nodes[j];
+                        if (abs(a.x - b.x) > 26) continue;
+                        const dy = b.y - a.y;
+                        const d = abs(dy);
+                        const minD = 13;
+                        if (d < minD && d > 0.0001) {
+                            const push = (minD - d) * 0.5;
+                            const s = dy > 0 ? 1 : -1;
+                            if (a.depth !== 0) a.y = constrain(a.y - s * push, TOP_BOUND, BOT_BOUND);
+                            if (b.depth !== 0) b.y = constrain(b.y + s * push, TOP_BOUND, BOT_BOUND);
+                        }
+                    }
+                }
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // DRAW
+        // ═══════════════════════════════════════════════════════════════════════
+        function draw() {
+            const bg = color(params.colorPalette[2]);
+            const dim = color(params.colorPalette[0]);
+            const acc = color(params.colorPalette[1]);
+
+            // ---- card ----
+            background(bg);
+            noFill();
+            stroke('#21262d');
+            strokeWeight(1);
+            rect(1, 1, W - 2, H - 2, 14);
+
+            drawBloom(dim, acc);
+            drawLeftHeader(acc);
+        }
+
+        function pulseAt(depth) {
+            if (params.pulse <= 0.0001) return 1; // static: full strength, depth falloff handles hierarchy
+            const t = frameCount * 0.02 * params.pulse;
+            const wave = 0.5 + 0.5 * Math.sin(depth * 0.7 - t * TWO_PI);
+            return 0.45 + 0.55 * Math.pow(wave, 2.2);
+        }
+
+        function drawBloom(dim, acc) {
+            const maxDepth = params.generations;
+
+            // ---- lineage (edges) ----
+            for (const e of edges) {
+                const depthFade = map(e.depth, 1, maxDepth, 1.0, 0.45);
+                const a = 255 * params.lineage * depthFade * pulseAt(e.depth);
+                stroke(red(dim), green(dim), blue(dim), a);
+                strokeWeight(map(e.depth, 1, maxDepth, 1.4, 0.7));
+                // gentle curve for an organic, grown feel
+                const mx = (e.a.x + e.b.x) / 2;
+                noFill();
+                bezier(e.a.x, e.a.y, mx, e.a.y, mx, e.b.y, e.b.x, e.b.y);
+            }
+
+            // ---- nodes ----
+            noStroke();
+            for (const nd of nodes) {
+                const pf = pulseAt(nd.depth);
+                if (nd.depth === 0) {
+                    // origin — the contract / single source
+                    fill(red(acc), green(acc), blue(acc), 235);
+                    circle(nd.x, nd.y, 7.5);
+                    noFill();
+                    stroke(red(acc), green(acc), blue(acc), 90 * pf);
+                    strokeWeight(1);
+                    circle(nd.x, nd.y, 13);
+                    noStroke();
+                } else if (nd.isLeaf) {
+                    // terminal generated client — allowed to glow
+                    const gA = 255 * params.glow * pf;
+                    fill(red(acc), green(acc), blue(acc), 60 * params.glow * pf);
+                    circle(nd.x, nd.y, 11);
+                    fill(red(acc), green(acc), blue(acc), 200 + 40 * params.glow);
+                    circle(nd.x, nd.y, 4.2);
+                } else {
+                    const fade = map(nd.depth, 1, maxDepth, 200, 110) * (0.6 + 0.4 * pf);
+                    fill(red(dim), green(dim), blue(dim), fade);
+                    circle(nd.x, nd.y, map(nd.depth, 1, maxDepth, 4.2, 2.6));
+                }
+            }
+        }
+
+        // Replicate the existing header.svg left-side content exactly.
+        function drawLeftHeader(acc) {
+            // wordmark
+            noStroke();
+            fill('#e6edf3');
+            textSize(46);
+            textStyle(BOLD);
+            textAlign(LEFT, BASELINE);
+            text('fewling', 40, 80);
+            textStyle(NORMAL);
+
+            // blinking cursor
+            const blink = (Math.floor(frameCount / 48) % 2 === 0) ? 1 : 0.12;
+            fill(red(acc), green(acc), blue(acc), 255 * blink);
+            rect(240, 50, 14, 34);
+
+            // "fullstack" chip
+            noFill();
+            stroke('#1D9E75');
+            strokeWeight(1);
+            fill('#161b22');
+            rect(286, 48, 104, 28, 14);
+            noStroke();
+            fill(red(acc), green(acc), blue(acc));
+            textSize(14);
+            textAlign(CENTER, BASELINE);
+            text('fullstack', 338, 66);
+
+            // subtitle
+            fill('#8b949e');
+            textSize(16);
+            textAlign(LEFT, BASELINE);
+            text('mobile · web · backend · cloud · ai', 42, 116);
+
+            // accent underline
+            fill('#1D9E75');
+            rect(42, 130, 118, 3);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // UI HANDLERS
+        // ═══════════════════════════════════════════════════════════════════════
+        function updateParam(name, value) {
+            params[name] = parseFloat(value);
+            document.getElementById(name + '-value').textContent = value;
+            // structural params require a rebuild; visual params don't
+            if (['generations', 'branching', 'spread', 'wobble'].includes(name)) buildBloom();
+        }
+
+        function updateColor(id, value) {
+            const idx = { color1: 0, color2: 1, color3: 2 }[id];
+            params.colorPalette[idx] = value;
+            document.getElementById(id + '-value').textContent = value;
+        }
+
+        function downloadPNG() { saveCanvas('fewling-header-bloom-seed' + params.seed, 'png'); }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SEED CONTROLS
+        // ═══════════════════════════════════════════════════════════════════════
+        function updateSeedDisplay() { document.getElementById('seed-input').value = params.seed; }
+        function updateSeed() {
+            let v = parseInt(document.getElementById('seed-input').value);
+            if (v && v > 0) { params.seed = v; buildBloom(); } else { updateSeedDisplay(); }
+        }
+        function previousSeed() { params.seed = Math.max(1, params.seed - 1); updateSeedDisplay(); buildBloom(); }
+        function nextSeed() { params.seed = params.seed + 1; updateSeedDisplay(); buildBloom(); }
+        function randomSeedAndUpdate() { params.seed = Math.floor(Math.random() * 999999) + 1; updateSeedDisplay(); buildBloom(); }
+
+        function resetParameters() {
+            params = JSON.parse(JSON.stringify(defaultParams));
+            for (const k of ['generations','branching','spread','wobble','lineage','glow','pulse']) {
+                document.getElementById(k).value = params[k];
+                document.getElementById(k + '-value').textContent = params[k];
+            }
+            document.getElementById('color1').value = params.colorPalette[0];
+            document.getElementById('color1-value').textContent = params.colorPalette[0];
+            document.getElementById('color2').value = params.colorPalette[1];
+            document.getElementById('color2-value').textContent = params.colorPalette[1];
+            document.getElementById('color3').value = params.colorPalette[2];
+            document.getElementById('color3-value').textContent = params.colorPalette[2];
+            updateSeedDisplay();
+            buildBloom();
+        }
+
+        window.addEventListener('load', updateSeedDisplay);
+    </script>
+</body>
+</html>
